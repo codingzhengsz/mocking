@@ -1,13 +1,29 @@
 package parking;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 public class VipParkingStrategyTest {
+
+  @Mock CarDao carDao;
+  @InjectMocks VipParkingStrategy vipParkingStrategy;
 
   @Test
   public void
@@ -54,6 +70,13 @@ public class VipParkingStrategyTest {
      * You may refactor the code, or try to use
      * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
      */
+    // given
+    Car car = createMockCar("粤C8888A");
+    when(carDao.isVip("粤C8888A")).thenReturn(true);
+    // when
+    boolean isAllowOverPark = vipParkingStrategy.isAllowOverPark(car);
+    // then
+    assertTrue(isAllowOverPark);
   }
 
   @Test

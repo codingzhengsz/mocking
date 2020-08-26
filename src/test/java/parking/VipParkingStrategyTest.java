@@ -9,6 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyList;
@@ -87,6 +88,13 @@ public class VipParkingStrategyTest {
      * You may refactor the code, or try to use
      * use @RunWith(MockitoJUnitRunner.class), @Mock (use Mockito, not PowerMock) and @InjectMocks
      */
+    // given
+    Car car = createMockCar("粤C88888");
+    when(carDao.isVip("粤C88888")).thenReturn(true);
+    // when
+    boolean isAllowOverPark = vipParkingStrategy.isAllowOverPark(car);
+    // then
+    assertFalse(isAllowOverPark);
   }
 
   @Test

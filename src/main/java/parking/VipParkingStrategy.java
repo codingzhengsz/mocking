@@ -8,50 +8,50 @@ import java.util.Optional;
 
 public class VipParkingStrategy implements ParkingStrategy {
 
-	CarDao carDao;
+  CarDao carDao;
 
-	public VipParkingStrategy(){
-		carDao = new CarDaoImpl();
-	}
+  public VipParkingStrategy() {
+    carDao = new CarDaoImpl();
+  }
 
-	public Receipt park(List<ParkingLot> parkingLots, Car car) {
+  public Receipt park(List<ParkingLot> parkingLots, Car car) {
 
-		parkingLots = Optional.ofNullable(parkingLots).orElse(new ArrayList<>());
-		
-		for (ParkingLot parkingLot : parkingLots) {
-			if (parkingLot.isFull() && !isAllowOverPark(car)) {
-				continue;
-			}
-			
-			parkingLot.getParkedCars().add(car);
-			return createReceipt(parkingLot, car);
-		}
-		
-		return createNoSpaceReceipt(car);
-	}
+    parkingLots = Optional.ofNullable(parkingLots).orElse(new ArrayList<>());
 
-	private Receipt createReceipt(ParkingLot parkingLot, Car car) {
-		
-		Receipt receipt = new Receipt();
-		receipt.setCarName(car.getName());
-		receipt.setParkingLotName(parkingLot.getName());
-		return receipt;
-	}
+    for (ParkingLot parkingLot : parkingLots) {
+      if (parkingLot.isFull() && !isAllowOverPark(car)) {
+        continue;
+      }
 
-	private Receipt createNoSpaceReceipt(Car car) {
-		
-		Receipt receipt = new Receipt();
-		receipt.setCarName(car.getName());
-		receipt.setParkingLotName(NO_PARKING_LOT);
-		return receipt;
-	}
+      parkingLot.getParkedCars().add(car);
+      return createReceipt(parkingLot, car);
+    }
 
-	private boolean isAllowOverPark(Car car){
-		return carDao.isVip(car.getName()) && StringUtils.contains(car.getName(), "A");
-	}
+    return createNoSpaceReceipt(car);
+  }
 
-	@Override
-	public Integer calculateHourlyPrice() {
-		return ParkingLot.getBasicHourlyPrice() * 2;
-	}
+  private Receipt createReceipt(ParkingLot parkingLot, Car car) {
+
+    Receipt receipt = new Receipt();
+    receipt.setCarName(car.getName());
+    receipt.setParkingLotName(parkingLot.getName());
+    return receipt;
+  }
+
+  private Receipt createNoSpaceReceipt(Car car) {
+
+    Receipt receipt = new Receipt();
+    receipt.setCarName(car.getName());
+    receipt.setParkingLotName(NO_PARKING_LOT);
+    return receipt;
+  }
+
+  public boolean isAllowOverPark(Car car) {
+    return carDao.isVip(car.getName()) && StringUtils.contains(car.getName(), "A");
+  }
+
+  @Override
+  public Integer calculateHourlyPrice() {
+    return ParkingLot.getBasicHourlyPrice() * 2;
+  }
 }

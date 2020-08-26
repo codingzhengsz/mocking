@@ -9,6 +9,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
+import static org.powermock.api.mockito.PowerMockito.doCallRealMethod;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.spy;
 
@@ -23,8 +24,8 @@ public class VipParkingStrategyPowerMockTest {
     // given
     mockStatic(ParkingLot.class, Calendar.class);
     VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
-    PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenReturn(25);
     PowerMockito.when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.SUNDAY);
+    PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenCallRealMethod();
     // when
     int totalCount = vipParkingStrategy.calculateHourlyPrice();
     // then
@@ -39,8 +40,8 @@ public class VipParkingStrategyPowerMockTest {
     // given
     mockStatic(ParkingLot.class, Calendar.class);
     VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
-    PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenReturn(20);
     PowerMockito.when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
+    PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenCallRealMethod();
     // when
     int totalCount = vipParkingStrategy.calculateHourlyPrice();
     // then

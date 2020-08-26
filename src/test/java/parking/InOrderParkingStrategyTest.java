@@ -7,7 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class InOrderParkingStrategyTest {
@@ -52,7 +57,17 @@ public class InOrderParkingStrategyTest {
   public void testPark_givenNoAvailableParkingLot_thenCreateNoSpaceReceipt() {
 
     /* Exercise 2: Test park() method. Use Mockito.spy and Mockito.verify to test the situation for no available parking lot */
-
+    // given
+    Car car = createMockCar("粤C88888");
+    ParkingLot parkingLot = createMockParkingLot("Southern Software Parking Lot", 20);
+    when(parkingLot.isFull()).thenReturn(true);
+    InOrderParkingStrategy inOrderParkingStrategy = spy(new InOrderParkingStrategy());
+    // when
+    Receipt receipt = inOrderParkingStrategy.park(Collections.singletonList(parkingLot), car);
+    // then
+    assertEquals("粤C88888", receipt.getCarName());
+    assertEquals("No Parking Lot", receipt.getParkingLotName());
+    verify(inOrderParkingStrategy, times(1)).park(anyList(), any(Car.class));
   }
 
   @Test

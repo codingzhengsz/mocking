@@ -24,6 +24,7 @@ public class VipParkingStrategyPowerMockTest {
     mockStatic(ParkingLot.class, Calendar.class);
     VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
     PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenReturn(25);
+    PowerMockito.when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.SUNDAY);
     // when
     int totalCount = vipParkingStrategy.calculateHourlyPrice();
     // then
@@ -35,5 +36,14 @@ public class VipParkingStrategyPowerMockTest {
 
     /* Exercise 6: Write test case for VipParkingStrategy calculateHourlyPrice
      * by using PowerMock to mock static method */
+    // given
+    mockStatic(ParkingLot.class, Calendar.class);
+    VipParkingStrategy vipParkingStrategy = spy(new VipParkingStrategy());
+    PowerMockito.when(ParkingLot.getBasicHourlyPrice()).thenReturn(20);
+    PowerMockito.when(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)).thenReturn(Calendar.MONDAY);
+    // when
+    int totalCount = vipParkingStrategy.calculateHourlyPrice();
+    // then
+    assertEquals(40, totalCount);
   }
 }
